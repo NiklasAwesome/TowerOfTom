@@ -2,10 +2,10 @@
 
 
 
-\newcommand{\version}{Version 1.0}
+\newcommand{\version}{Version 1.1}
 \author{Niklas Åsberg, \url{nikas214@student.liu.se}}
 \title{Kravspecification}
-\date{2023-11-18}
+\date{2023-11-24}
 \rhead{Niklas Åsberg}
 \usepackage{graphicx}
 \graphicspath{{./}}
@@ -20,6 +20,7 @@
 Ver. & Revisionsbeskrivning & Datum \\\hline
 0.1 & Utkast & 2023-11-12 \\\hline
 1.0 & Utökat antal krav och förtydligat beskrivningen & 2023-11-18 \\\hline
+1.1 & Ändringar efter feedback & 2023-11-24 \\\hline
 \end{tabularx}
 \end{table}
 
@@ -32,11 +33,7 @@ Spelplanen är ett rutnät, all förflyttning sker mellan rutor intill varandra.
 Det kommer vara massa fiender ivägen för spelaren som spelaren ska ta sig förbi eller förinta. 
 Fiender kan skada spelaren om de hamnar i samma ruta, hur mycket skada spearen tar är olika beroende på fiende-typ.
 Spelaren kan attackera fiender när fienderna är en ruta bort.
-
-\section{Målgrupp}
 Målgruppen för spelet är de som gillar arkadspel och speed-runners.
-
-\section{Spelupplevelse}
 Spelet har mycket fokus på snabbhet, så spelaren kommer att försöka slå sin bästa tid och tävla med andra spelara om vem som får högst poäng.
 
 \section{Spelmekanik}
@@ -62,24 +59,25 @@ Spelet kommer vara tvådimentionellt och vara ur ett fågelperspektiv.
 \section{Kravformulering}
 \subsection{Ska-krav}
 \begin{enumerate}
-  \item Spelplanen ska vara ett rutnät där rörelse sker från en ruta till en annan.
-  \item Spelplanen ska vara en labyrint som är tvådimensionell.
-  \item Väggar ska finnas på vissa rutor.
+  \item Hela spelplanen ska synas i spelfönstret.
+  \item Spelplanen ska vara en labyrint som är tvådimensionell och har väggar som så det blir en bana från start till slutpunkt.
+  \item Väggar ska finnas på vissa positioner.
   \item Spelaren ska kunna röra sig åt fyra håll med hjälp av W, A, S och D.
-  \item Spelaren ska ha ett antal livspoäng
-  \item Varken spelaren eller fienderna ska inte kunna gå på en ruta där det finns en vägg.
+  \item Spelaren ska ha ett antal livspoäng.
+  \item Varken spelaren eller fienderna ska inte kunna gå igenom en vägg.
   \item När spelaren trycker på mellanslag ska spelaren attackera.
-  \item Om en fiende är på rutan framför spelaren och spelaren attackerar så ska fienden ta skada.
-  \item Fiender ska röra sig mellan rutor enligt en fördefinerad bana.
+  \item Om en fiende är framför spelaren, inom attackavstånd och spelaren attackerar så ska fienden ta skada.
+  \item Fiender ska röra positioner enligt en fördefinerad bana.
   \item Fienderna ska ha ett antal livspoäng.
   \item När en fiende har noll livspoäng så blir den fienden förintad.
-  \item Fiender ska skada spelaren när de är på samma ruta.
+  \item Fiender ska skada spelaren när de kolliderar.
   \item Spelaren ska tappa livspoäng när spelaren blir skadad.
   \item När spelaren har noll livspoäng ska spelet börja om.
   \item 2 typer av fiender ska finnas, en stor och en liten.
-  \item Det ska finnas en ruta som är utgången.
-  \item Om spelaren står på rutan med utgången ska nästa bana påbörjas.
+  \item Det ska finnas en utgång.
+  \item Om spelaren koliderar med utgången ska nästa bana påbörjas.
   \item Slutpoängen ska räknas ut baserat på antalet förintade fiender och tiden det tar att klara spelet.
+  \item Banorna ska skapas baserat på en textfil som specificerar var väggarna ska vara, vart utgången är och var 
 \end{enumerate}
 
 \subsection{Bör-krav}
@@ -126,6 +124,11 @@ Labyrinten kommer fylla fönstret, när nästa bana påbörjas så kommer den ny
 
 Uppfylls av krav 6 och 12. 
 Spelaren kommer ta skada om den koliderar med en fiende.
+
+\textbf{Det ska vara enkelt att lägga till eller ändra banor i spelet. Detta kan exempelvis lösas genom att läsa in banor från en fil (lite som i Sokoban-labben i TDP002), eller genom att ha funktioner i programkoden som bygger upp en datastruktur som definierar en bana.}
+
+Uppfylls av krav 19.
+
 
 
 

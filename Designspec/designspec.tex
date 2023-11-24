@@ -2,10 +2,10 @@
 
 
 
-\newcommand{\version}{Version 0.1}
+\newcommand{\version}{Version 0.2}
 \author{Niklas Åsberg, \url{nikas214@student.liu.se}}
 \title{Designspecifikation}
-\date{2023-11-21}
+\date{2023-11-24}
 \rhead{Niklas Åsberg}
 \graphicspath{{./}}
 
@@ -17,6 +17,7 @@
 \hline
 Ver. & Revisionsbeskrivning & Datum \\\hline
 0.1 & Utkast & 2023-11-21 \\\hline
+0.2 & Ändrad design efter feedback på kravspecen & 2023-11-24 \\\hline
 \end{tabularx}
 \end{table}
 
@@ -39,10 +40,11 @@ Dessa attribut är specificerade i Characterklassen som är en interface som i s
   \item int: health - antalet liv spelaren har.
   \item float: speed - hur snabbt spelaren kan röra sig.
   \item int: damage - hur mycket skada spelaren gör när den attackerar.
-  \item sf::vector2f: prevLocation - den senaste rutan spelaren var på.
-  \item sf::vector2f: location - rutan som spelaren är på just nu.
+  \item sf::Time: timeSinceDamaged - tiden sen spelaren sist blev skadad.
+  \item sf::vector2f: location - positionen som spelaren har just nu.
   \item string: sprite - filvägen till spelarens bild.
   \item bool: collidable - bool som visar om det går att kollidera med spelaren
+  \item int: size - storleken på spelaren.
 \end{itemize}
 \subsubsection{Metoder}
 Metoden attack() är den enda metoden som är unik för Playerklassen, de andra metoderna är specificerade i interfacet.
@@ -54,17 +56,16 @@ Metoden attack() är den enda metoden som är unik för Playerklassen, de andra 
 
 \newpage
 
-\subsection{Squareklassen}
-Squareklassen representerar en ruta på spelplanen. En ruta kan innehålla ett eller inga objekt som implementerar GameObjectklassen. \\
-Squareklassen interagerar direkt med objekt som implementerar GameObjectklassen och Mapklassen. Mapklassen innehåller flera instanser av Squareklassen. \\
+\subsection{Mapklassen}
+Mapklassen representerar spelplanen. Spelplanen innehåller alla objekt som implementerar GameObjectklassen. \\
+Mapklassen interagerar med GameObjectklassen för att kunna avgöra om en kollision har inträffat. \\
 \subsubsection{Attribut}
 \begin{itemize}
-  \item GameObject: contains - en referens till vilket objekt som står på den här rutan.
-  \item sf::vector2f: location - positionen för den här rutan.
+  \item GameObject[]: gameObjects - en lista av referenser till alla instanser av GameObjectklassen.
 \end{itemize}
 \subsubsection{Metoder}
 \begin{itemize}
-  \item canBeMovedTo() - anropas av ett objekt som vill flytta till den här rutan för att se om rutan redan är upptagen eller inte.
+  \item allowedPosition() - anropas av ett objekt som vill flytta för att se om en kollision kommer ske.
 \end{itemize}
 
 \section{UML-diagram}
@@ -74,7 +75,7 @@ Squareklassen interagerar direkt med objekt som implementerar GameObjectklassen 
 \section{Diskution}
 I mitt spel så utgår allt från en instans av Gameklassen, Gameklassen innehåller en instans av Mapklassen. Gameklassen har även ansvaret att byta instansen \\
 av map när en ny bana påbörjas, Gameklassen sköter inladdningen av ban-filen och skapar Map-instansen från den. 
-Map-instansen innehåller alla Square-instanser. Squareklassen har sen koll på alla GameObject-instanser.
+Map-instansen innehåller alla GameObject-instanser, och har koll på om objekt har kolliderat.
 Jag valde den här typen av design då det blir väldigt lätt att lägga till och ändra hur spelet ska se ut. \\
 Om man till exempel vill lägga till andra hinder eller karaktärer så behöver vi inte ändra i de allra flesta klasser.
 Kollisionshanteringen sker mellan spelobjekt så om vi skulle vilja ändra vad som händer vid kollision så ändrar vi bara i det spelobjektets klass.
