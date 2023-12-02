@@ -1,0 +1,19 @@
+1. Hela spelplanen ska synas i spelfönstret.
+2. Spelplanen ska vara en labyrint som är tvådimensionell och har väggar som så det blir en bana från start till slutpunkt.
+3. Väggar ska finnas på vissa positioner.
+4. Spelaren ska kunna röra sig åt fyra håll med hjälp av W, A, S och D.
+5. Spelaren ska ha ett antal livspoäng.
+6. Varken spelaren eller fienderna ska inte kunna gå igenom en vägg.
+7. När spelaren trycker på mellanslag ska spelaren attackera.
+8. Om en fiende är framför spelaren, inom attackavstånd och spelaren attackerar så ska fienden ta skada.
+9. Fiender ska röra positioner enligt en fördefinerad bana.
+10. Fienderna ska ha ett antal livspoäng.
+11. När en fiende har noll livspoäng så blir den fienden förintad.
+12. Fiender ska skada spelaren när de kolliderar.
+13. Spelaren ska tappa livspoäng när spelaren blir skadad.
+14. När spelaren har noll livspoäng ska spelet börja om.
+15. 2 typer av fiender ska finnas, en stor och en liten.
+16. Det ska finnas en utgång.
+17. Om spelaren koliderar med utgången ska nästa bana påbörjas.
+18. Slutpoängen ska räknas ut baserat på antalet förintade fiender och tiden det tar att klara spelet.
+19. Banorna ska skapas baserat på en textfil som specificerar var väggarna ska vara, vart utgången är och var 
