@@ -10,6 +10,12 @@ Map::Map(/* args */)
 
 Map::~Map()
 {
+	delete player;
+	for (size_t i = 0; i < objectList.size(); i++)
+	{
+		delete objectList[i];
+	}
+	
 }
 
 void Map::draw(sf::RenderWindow &window)

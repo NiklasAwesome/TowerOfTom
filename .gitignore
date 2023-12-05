@@ -3,3 +3,7 @@
 *.out
 LectureNotes/
 TDP005-mall.pdf
+*/sfml
+/latex
+/html
+Doxyfile

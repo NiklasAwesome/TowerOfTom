@@ -1,9 +1,13 @@
+Klart:
 1. Hela spelplanen ska synas i spelfönstret.
-2. Spelplanen ska vara en labyrint som är tvådimensionell och har väggar som så det blir en bana från start till slutpunkt.
 3. Väggar ska finnas på vissa positioner.
-4. Spelaren ska kunna röra sig åt fyra håll med hjälp av W, A, S och D.
-5. Spelaren ska ha ett antal livspoäng.
 6. Varken spelaren eller fienderna ska inte kunna gå igenom en vägg.
+4. Spelaren ska kunna röra sig åt fyra håll med hjälp av W, A, S och D.
+-------------------------------
+Inte klart:
+
+2. Spelplanen ska vara en labyrint som är tvådimensionell och har väggar som så det blir en bana från start till slutpunkt.
+5. Spelaren ska ha ett antal livspoäng.
 7. När spelaren trycker på mellanslag ska spelaren attackera.
 8. Om en fiende är framför spelaren, inom attackavstånd och spelaren attackerar så ska fienden ta skada.
 9. Fiender ska röra positioner enligt en fördefinerad bana.

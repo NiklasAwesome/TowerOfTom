@@ -14,7 +14,7 @@ protected:
 
 public:
 	Character(int x, int y);
-	~Character();
+	virtual ~Character();
 	void move(sf::Time delta);
 };
 

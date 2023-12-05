@@ -16,7 +16,7 @@ protected:
 public:
 	bool collidable{false};
 	GameObject(int xLocation, int yLocation);
-	~GameObject();
+	virtual ~GameObject();
 	virtual void move(sf::Time delta) = 0;
 	void draw(sf::RenderWindow &window);
 	virtual void collided(GameObject *obstacle);
