@@ -1,6 +1,6 @@
 #include "Character.h"
 
-Character::Character(int x, int y) : GameObject(x, y)
+Character::Character(int x, int y, sf::Texture &texture) : GameObject(x, y, texture)
 {
 	
 }

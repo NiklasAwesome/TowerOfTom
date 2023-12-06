@@ -6,15 +6,24 @@
 #include "Devil.h"
 #include "Wall.h"
 
+struct Textures
+{
+	sf::Texture player;
+	sf::Texture devil;
+	sf::Texture wall;
+};
 
 class Map
 {
 private:
-	std::vector<GameObject*> objectList;
+	std::vector<GameObject *> objectList;
 	sf::CircleShape collisionDetector{30};
+	Textures textures;
 	void setOuterWalls();
+	void setBasicMaze();
+
 public:
-	Player *player = new Player(32,32);
+	Player *player;
 	Map(/* args */);
 	~Map();
 	void draw(sf::RenderWindow &window);
@@ -23,4 +32,3 @@ public:
 	void collisionCheck();
 	bool collided(GameObject *first, GameObject *second);
 };
-

@@ -1,9 +1,8 @@
 #include "Devil.h"
 
 
-Devil::Devil(int x, int y) : Character(x, y)
+Devil::Devil(int x, int y, sf::Texture &texture) : Character(x, y, texture)
 {
-	setTexture("sprites/devil.png");
 	size = 31.0f;
 	collidable = true;
 	speed = 100.0f;

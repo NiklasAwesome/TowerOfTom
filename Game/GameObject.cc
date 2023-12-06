@@ -1,12 +1,12 @@
 #include "GameObject.h"
 
-GameObject::GameObject(int xLocation, int yLocation)
+GameObject::GameObject(int xLocation, int yLocation, sf::Texture &texture)
 {
 	size = 32.0f;
-	// setTexture("sprites/wall.png");
 	location.x = xLocation;
 	location.y = yLocation;
 	prevLocation = location;
+	setTexture(texture);
 	sprite.setPosition(location);
 }
 
@@ -14,14 +14,8 @@ GameObject::~GameObject()
 {
 }
 
-void GameObject::setTexture(std::string imagePath)
-{
-	while (!texture.loadFromFile(imagePath))
-	{
-		/* code */
-	}
-	
-	
+void GameObject::setTexture(sf::Texture &texture)
+{	
 	sprite.setTexture(texture);
 }
 

@@ -1,8 +1,7 @@
 #include "Wall.h"
 
-Wall::Wall(int x, int y) : GameObject(x, y)
+Wall::Wall(int x, int y, sf::Texture &texture) : GameObject(x, y, texture)
 {
-	setTexture("sprites/wall.png");
 }
 
 Wall::~Wall()

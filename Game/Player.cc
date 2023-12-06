@@ -1,8 +1,7 @@
 #include "Player.h"
 
-Player::Player(int x, int y) : Character(x, y)
+Player::Player(int x, int y, sf::Texture &texture) : Character(x, y, texture)
 {
-	setTexture("sprites/protagonist.png");
 	size = 31.0f;
 	collidable = true;
 	speed = 400.0f;

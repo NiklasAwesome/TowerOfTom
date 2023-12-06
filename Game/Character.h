@@ -13,7 +13,7 @@ protected:
 	bool right{false};
 
 public:
-	Character(int x, int y);
+	Character(int x, int y, sf::Texture &texture);
 	virtual ~Character();
 	void move(sf::Time delta);
 };
