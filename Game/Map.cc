@@ -2,189 +2,239 @@
 
 Map::Map(/* args */)
 {
-	textures.devil.loadFromFile("sprites/devil.png");
-	textures.player.loadFromFile("sprites/protagonist.png");
-	textures.wall.loadFromFile("sprites/wall.png");
-	collisionDetector.setPosition(900, 0);
-	collisionDetector.setFillColor(sf::Color::Green);
-	player = new Player(32,32,textures.player);
-	setOuterWalls();
-	setBasicMaze();
+	font.loadFromFile("font2.ttf");
+	hitpointsText.setFont(font);
+	hitpointsText.setPosition(0, 0);
+	hitpointsText.setCharacterSize(30);
+	hitpointsText.setStyle(sf::Text::Regular);
+	hitpointsText.setFillColor(sf::Color::White);
+	hitpointsText.setOutlineColor(sf::Color::Black);
+	hitpointsText.setOutlineThickness(2.0f);
+	hitpointsText.setString("");
+
+	player = new Player(40, 40, textures);
+	door = new Door(100, 100, textures);
+	readMapFile();
+	setMaze(mazeList[0]);
 }
 
 Map::~Map()
 {
 	delete player;
-	for (size_t i = 0; i < objectList.size(); i++)
+	for (size_t i = 0; i < propList.size(); i++)
 	{
-		delete objectList[i];
+		delete propList[i];
 	}
-	
+	for (size_t i = 0; i < characterList.size(); i++)
+	{
+		delete characterList[i];
+	}
 }
 
 void Map::draw(sf::RenderWindow &window)
 {
-	window.draw(collisionDetector);
 	player->draw(window);
-	if (objectList.size() > 0)
+	door->draw(window);
+	if (propList.size() > 0)
 	{
-		for (size_t i = 0; i < objectList.size(); i++)
+		for (size_t i = 0; i < propList.size(); i++)
 		{
-			objectList[i]->draw(window);
+			propList[i]->draw(window);
 		}
 	}
+	if (characterList.size() > 0)
+	{
+		for (size_t i = 0; i < characterList.size(); i++)
+		{
+			characterList[i]->draw(window);
+		}
+	}
+	window.draw(hitpointsText);
 }
 
-void Map::addObject(GameObject *gameObject)
+void Map::addProp(GameObject *gameObject)
 {
-	objectList.push_back(gameObject);
+	propList.push_back(gameObject);
+}
+
+void Map::addCharacter(Character *character)
+{
+	characterList.push_back(character);
 }
 
 void Map::update(sf::Time delta)
 {
+	hitpointsText.setString(player->hpString());
 	player->move(delta);
-	if (objectList.size() > 0)
+	if (characterList.size() > 0)
 	{
-		for (size_t i = 0; i < objectList.size(); i++)
+		for (size_t i = 0; i < characterList.size(); i++)
 		{
-			objectList[i]->move(delta);
+			characterList[i]->move(delta);
 		}
 	}
+	if (player->attacking())
+	{
+		for (size_t i = 0; i < characterList.size(); i++)
+		{
+			if (characterList[i]->bounds().intersects(player->attackPoint()))
+			{
+				characterList[i]->takeDamage(player->damage);
+				if (characterList[i]->isDead())
+				{
+					characterList.erase(characterList.begin() + i);
+				}
 
+				break;
+			}
+		}
+	}
 }
 
 void Map::collisionCheck()
 {
-	bool collidedThisTurn = false;
-	for (size_t i = 0; i < objectList.size(); i++)
+	for (size_t i = 0; i < characterList.size(); i++)
 	{
-		for (size_t j = 0; j < objectList.size(); j++)
+		for (size_t j = 0; j < propList.size(); j++)
 		{
-			if (collided(objectList[i], objectList[j]))
+			if (collided(characterList[i], propList[j]))
 			{
-				collisionDetector.setFillColor(sf::Color::Red);
-				objectList[i]->collided(objectList[j]);
-				objectList[j]->collided(objectList[i]);
-				collidedThisTurn = true;
+				characterList[i]->collided(propList[j]);
 			}
 		}
-		if (collided(player, objectList[i]))
+		if (collided(player, characterList[i]))
 		{
-			collisionDetector.setFillColor(sf::Color::Red);
-			player->collided(objectList[i]);
-			objectList[i]->collided(player);
-			collidedThisTurn = true;
+			player->collided(characterList[i]);
+			characterList[i]->collided(player);
 		}
 	}
-	if (!collidedThisTurn)
+	for (size_t i = 0; i < propList.size(); i++)
 	{
-		collisionDetector.setFillColor(sf::Color::Green);
+		if (collided(player, propList[i]))
+		{
+			player->collided(propList[i]);
+		}
+	}
+	if (collided(player, door))
+	{
+		level++;
+		if (level < (int)mazeList.size())
+		{
+			setMaze(mazeList[level]);
+		}
+		else
+		{
+			won = true;
+			player->takeDamage(10000);
+		}
 	}
 }
 
 bool Map::collided(GameObject *first, GameObject *second)
 {
-	if (!first->collidable && !second->collidable)
-	{
-		return false;
-	}
-
-	if (first == second)
-	{
-		return false;
-	}
-
-	if (first->leftBound() >= second->rightBound() || second->leftBound() >= first->rightBound())
-	{
-		return false;
-	}
-	if (first->upBound() >= second->downBound() || second->upBound() >= first->downBound())
-	{
-		return false;
-	}
-	return true;
+	return first->bounds().intersects(second->bounds());
 }
 
 void Map::setOuterWalls()
 {
 	for (int i = 0; i < 18; i++)
 	{
-		addObject(new Wall{0, 32*i, textures.wall});
-		addObject(new Wall{992, 32*i, textures.wall});
+		addProp(new Wall{0, 32 * i, textures});
+		addProp(new Wall{992, 32 * i, textures});
 	}
 	for (int i = 1; i < 31; i++)
 	{
-		addObject(new Wall{32*i, 0, textures.wall});
-		addObject(new Wall{32*i, 544, textures.wall});
+		addProp(new Wall{32 * i, 0, textures});
+		addProp(new Wall{32 * i, 544, textures});
 	}
-	
-	
 }
-
-// void Map::setBasicMaze()
-// {
-// 	std::vector<std::string> maze;
-// 	maze.push_back("010001000001000000000000000000");
-// 	maze.push_back("010101001001000000000000000000");
-// 	maze.push_back("010101001001011111111111111100");
-// 	maze.push_back("010101001000010000000011000000");
-// 	maze.push_back("010101001111110000000011000000");
-// 	maze.push_back("010101001000000000000011000000");
-// 	maze.push_back("010101001000000000000011000000");
-// 	maze.push_back("010101001000000000000011000000");
-// 	maze.push_back("010101001000000000000011000000");
-// 	maze.push_back("010101001000000000000011000000");
-// 	maze.push_back("010101001000000000000011000000");
-// 	maze.push_back("010101001000000000000011000000");
-// 	maze.push_back("010101001000000000000011000000");
-// 	maze.push_back("010101001000000000000011000000");
-// 	maze.push_back("010101001000000000000011000000");
-// 	maze.push_back("000100001000000000000011000000");
-
-	
-// 	for (size_t i = 0; i < maze.size(); i++)
-// 	{
-// 		for (size_t c = 0; c < maze[i].size(); c++)
-// 		{
-// 			if (maze[i][c] == '1')
-// 			{
-// 				addObject(new Wall{32*((int)c + 1), 32*((int)i+1), textures.wall});
-// 			}
-// 		}
-// 	}
-	
-// }
 
 void Map::setBasicMaze()
 {
 	std::vector<std::string> maze;
-	maze.push_back("010001000001000");
-	maze.push_back("010101001001000");
-	maze.push_back("010101001001011");
-	maze.push_back("010101001000000");
-	maze.push_back("010101001101110");
-	maze.push_back("010101001222222");
-	maze.push_back("010101001222222");
-	maze.push_back("000100001222222");
 
-	
-	for (size_t i = 0; i < maze.size(); i++)
+	maze.push_back("0P0000000000000");
+	maze.push_back("000000000000000");
+	maze.push_back("000000000000000");
+	maze.push_back("000000000000000");
+	maze.push_back("0000000W0000000");
+	maze.push_back("000000000000000");
+	maze.push_back("00000000000000E");
+	maze.push_back("000MM00000000D0");
+
+	setMaze(maze);
+}
+
+void Map::readMapFile()
+{
+	std::vector<std::string> maze;
+	std::ifstream myfile("mapfile.txt");
+	if (myfile.is_open())
 	{
-		for (size_t c = 0; c < maze[i].size(); c++)
+		std::string line;
+		while (std::getline(myfile, line))
 		{
-			if (maze[i][c] == '1')
+			if (line[0] == '.')
 			{
-				addObject(new Wall{32 + 64*(int)c, 32 + 64*(int)i, textures.wall});
-				addObject(new Wall{32 + 64*(int)c + 32, 32 + 64*(int)i, textures.wall});
-				addObject(new Wall{32 + 64*(int)c, 32 + 64*(int)i + 32, textures.wall});
-				addObject(new Wall{32 + 64*(int)c + 32, 32 + 64*(int)i + 32, textures.wall});
-			}
-			if (maze[i][c] == '2')
-			{
-				addObject(new Devil{32 + 64*(int)c, 32 + 64*(int)i, textures.devil});
+				break;
 			}
 			
+			if (line[0] == '#')
+			{
+				mazeList.push_back(maze);
+				maze.clear();
+			}
+			else
+			{
+				maze.push_back(line);
+			}
+		}
+		myfile.close();
+	}
+}
+
+void Map::setMaze(std::vector<std::string> maze)
+{
+	clearMap();
+	setOuterWalls();
+	for (size_t i = 0; i < maze.size() && i < 8; i++)
+	{
+		for (size_t c = 0; c < maze[i].size() && c < 15; c++)
+		{
+			if (maze[i][c] == 'W')
+			{
+				addProp(new Wall{32 + 64 * (int)c, 32 + 64 * (int)i, textures});
+				addProp(new Wall{32 + 64 * (int)c + 32, 32 + 64 * (int)i, textures});
+				addProp(new Wall{32 + 64 * (int)c, 32 + 64 * (int)i + 32, textures});
+				addProp(new Wall{32 + 64 * (int)c + 32, 32 + 64 * (int)i + 32, textures});
+			}
+			if (maze[i][c] == 'D')
+			{
+				addCharacter(new Devil{32 + 64 * (int)c, 32 + 64 * (int)i, textures});
+			}
+			if (maze[i][c] == 'M')
+			{
+				addCharacter(new Minion{32 + 64 * (int)c, 32 + 64 * (int)i, textures});
+			}
+			if (maze[i][c] == 'E')
+			{
+				door->setLocation(32 + 64 * (int)c, 32 + 64 * (int)i);
+			}
+			if (maze[i][c] == 'P')
+			{
+				player->setLocation(32 + 64 * (int)c, 32 + 64 * (int)i);
+			}
 		}
 	}
-	
+}
+
+void Map::clearMap()
+{
+	propList.clear();
+	characterList.clear();
+}
+
+void Map::setWinScreen()
+{
+
 }

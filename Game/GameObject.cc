@@ -1,12 +1,12 @@
 #include "GameObject.h"
 
-GameObject::GameObject(int xLocation, int yLocation, sf::Texture &texture)
+GameObject::GameObject(int xLocation, int yLocation, Textures &textures)
 {
 	size = 32.0f;
 	location.x = xLocation;
 	location.y = yLocation;
 	prevLocation = location;
-	setTexture(texture);
+	setTexture(textures.wall);
 	sprite.setPosition(location);
 }
 
@@ -15,8 +15,8 @@ GameObject::~GameObject()
 }
 
 void GameObject::setTexture(sf::Texture &texture)
-{	
-	sprite.setTexture(texture);
+{
+	sprite.setTexture(texture, true);
 }
 
 void GameObject::move(sf::Time delta)
@@ -25,7 +25,6 @@ void GameObject::move(sf::Time delta)
 	{
 		/* code */
 	}
-	
 }
 
 void GameObject::draw(sf::RenderWindow &window)
@@ -45,19 +44,24 @@ void GameObject::collided(GameObject *obstacle)
 	}
 }
 
-float GameObject::upBound()
+void GameObject::takeDamage(int damage)
 {
-	return location.y;
+	if (damage == 10000)
+	{
+		/* code */
+	}
 }
-float GameObject::downBound()
+
+sf::Vector2f GameObject::normalize(sf::Vector2f &v)
 {
-	return location.y + size;
+	float len = std::sqrt(v.x * v.x + v.y * v.y);
+	if (len <= 0.0f)
+		return sf::Vector2f{0, 0};
+	else
+		return v * (1.0f / len);
 }
-float GameObject::leftBound()
+
+sf::FloatRect GameObject::bounds()
 {
-	return location.x;
-}
-float GameObject::rightBound()
-{
-	return location.x + size;
+	return sprite.getGlobalBounds();
 }

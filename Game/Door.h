@@ -2,15 +2,16 @@
 
 #include "GameObject.h"
 
-class Wall : public GameObject
+class Door : public GameObject
 {
 private:
-	
+	/* data */
 public:
-	Wall(int x, int y, Textures &textures);
-	~Wall();
+	Door(int x, int y, Textures &textures);
+	~Door();
 	void move(sf::Time delta);
 	void collided(GameObject *obstacle);
+	void setLocation(int x, int y);
 };
 
 

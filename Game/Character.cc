@@ -1,6 +1,6 @@
 #include "Character.h"
 
-Character::Character(int x, int y, sf::Texture &texture) : GameObject(x, y, texture)
+Character::Character(int x, int y, Textures &textures) : GameObject(x, y, textures), textures(textures)
 {
 	
 }
@@ -9,7 +9,10 @@ Character::~Character()
 {
 }
 
-
+bool Character::isDead()
+{
+	return hitpoints <= 0;
+}
 
 void Character::move(sf::Time delta)
 {
@@ -40,4 +43,18 @@ void Character::move(sf::Time delta)
 	location.x += direction.x * distance;
 	location.y += direction.y * distance;
 	sprite.setPosition(location);
+}
+
+bool Character::damageable()
+{
+	return timeSinceDamaged.getElapsedTime() > sf::seconds(1.0f);
+}
+
+void Character::takeDamage(int damage)
+{
+	if (damageable())
+	{
+		timeSinceDamaged.restart();
+		hitpoints -= damage;
+	}
 }

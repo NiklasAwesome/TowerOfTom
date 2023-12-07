@@ -1,7 +1,8 @@
 #include "Wall.h"
 
-Wall::Wall(int x, int y, sf::Texture &texture) : GameObject(x, y, texture)
+Wall::Wall(int x, int y, Textures &textures) : GameObject(x, y, textures)
 {
+	setTexture(textures.wall);
 }
 
 Wall::~Wall()

@@ -10,7 +10,7 @@ private:
 	 * @brief The window that the game is displayed in.
 	 * 
 	 */
-	sf::RenderWindow window{sf::VideoMode(1024, 576), "Gametitle"};
+	sf::RenderWindow window{sf::VideoMode(1024, 576), "Tower of Tom"};
 	/**
 	 * @brief The object that represents the games map.
 	 * 
@@ -22,6 +22,8 @@ private:
 	 * @param delta The diffrents in time since last update cycle.
 	 */
 	void update(sf::Time delta);
+	void endScreen(bool won, sf::Time playTime);
+	float finalPlayTime{0};
 public:
 	Game(/* args */);
 	~Game();

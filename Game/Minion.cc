@@ -1,23 +1,23 @@
-#include "Devil.h"
+#include "Minion.h"
 
-
-Devil::Devil(int x, int y, Textures &textures) : Character(x, y, textures)
+Minion::Minion(int x, int y, Textures &textures) : Character(x, y, textures)
 {
-	hitpoints = 10;
-	damage = 2;
-	size = 31.0f;
+	hitpoints = 2;
+	damage = 1;
+	size = 15.0f;
 	collidable = true;
-	speed = 100.0f;
+	speed = 200.0f;
 	down = true;
-	setTexture(textures.devil);
+	setTexture(textures.minion);
 }
 
-Devil::~Devil()
+Minion::~Minion()
 {
 }
 
-void Devil::setRandomDirection()
+void Minion::setRandomDirection()
 {
+	timeSinceRandom.restart();
 	up = false;
 	down = false;
 	left = false;
@@ -44,7 +44,7 @@ void Devil::setRandomDirection()
 	}
 }
 
-void Devil::collided(GameObject *obstacle)
+void Minion::collided(GameObject *obstacle)
 {
 	if (!obstacle->collidable)
 	{
@@ -61,12 +61,15 @@ void Devil::collided(GameObject *obstacle)
 	
 	
 	setRandomDirection();
-	
-	
 }
 
-void Devil::move(sf::Time delta)
+void Minion::move(sf::Time delta)
 {
+	if (timeSinceRandom.getElapsedTime() > sf::seconds(1))
+	{
+		setRandomDirection();
+	}
+	
 	prevLocation = location;
 	float distance = speed * (delta.asMicroseconds() / 1000000.0f);
 	sf::Vector2f direction{0,0};
@@ -96,17 +99,18 @@ void Devil::move(sf::Time delta)
 	sprite.setPosition(location);
 	if (damageable())
 	{
-		setTexture(textures.devil);
+		setTexture(textures.minion);
 	}
 }
 
-void Devil::takeDamage(int damage)
+void Minion::takeDamage(int damage)
 {
 	if (damageable())
 	{
-		setTexture(textures.devilHurt);
+		setTexture(textures.minionHurt);
 		timeSinceDamaged.restart();
 		hitpoints -= damage;
 	}
 	setRandomDirection();
+	
 }
