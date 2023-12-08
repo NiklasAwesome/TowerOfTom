@@ -1,9 +1,10 @@
 #include "Game.h"
 
-Game::Game(/* args */)
+Game::Game(std::string mazeFile) : map(mazeFile)
 {
 	// window.setVerticalSyncEnabled(true);
 	window.setKeyRepeatEnabled(false);
+	// map.mazeFile = mazeFile;
 }
 
 Game::~Game()
@@ -41,7 +42,7 @@ void Game::run()
 		}
 		
 		window.display();
-		sf::sleep(sf::milliseconds(10));
+		sf::sleep(sf::milliseconds(5));
 	}
 }
 

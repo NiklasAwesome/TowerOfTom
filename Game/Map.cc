@@ -1,21 +1,16 @@
 #include "Map.h"
 
-Map::Map(/* args */)
+Map::Map(std::string mazeFile) : mazeFile(mazeFile)
 {
-	font.loadFromFile("font2.ttf");
-	hitpointsText.setFont(font);
-	hitpointsText.setPosition(0, 0);
-	hitpointsText.setCharacterSize(30);
-	hitpointsText.setStyle(sf::Text::Regular);
-	hitpointsText.setFillColor(sf::Color::White);
-	hitpointsText.setOutlineColor(sf::Color::Black);
-	hitpointsText.setOutlineThickness(2.0f);
-	hitpointsText.setString("");
+	setHitPointText();
 
 	player = new Player(40, 40, textures);
 	door = new Door(100, 100, textures);
 	readMapFile();
-	setMaze(mazeList[0]);
+	if (!mazeList.empty())
+	{
+		setMaze(mazeList[0]);
+	}
 }
 
 Map::~Map()
@@ -149,26 +144,10 @@ void Map::setOuterWalls()
 	}
 }
 
-void Map::setBasicMaze()
-{
-	std::vector<std::string> maze;
-
-	maze.push_back("0P0000000000000");
-	maze.push_back("000000000000000");
-	maze.push_back("000000000000000");
-	maze.push_back("000000000000000");
-	maze.push_back("0000000W0000000");
-	maze.push_back("000000000000000");
-	maze.push_back("00000000000000E");
-	maze.push_back("000MM00000000D0");
-
-	setMaze(maze);
-}
-
 void Map::readMapFile()
 {
 	std::vector<std::string> maze;
-	std::ifstream myfile("mapfile.txt");
+	std::ifstream myfile(mazeFile);
 	if (myfile.is_open())
 	{
 		std::string line;
@@ -178,7 +157,7 @@ void Map::readMapFile()
 			{
 				break;
 			}
-			
+
 			if (line[0] == '#')
 			{
 				mazeList.push_back(maze);
@@ -234,7 +213,16 @@ void Map::clearMap()
 	characterList.clear();
 }
 
-void Map::setWinScreen()
-{
 
+void Map::setHitPointText()
+{
+	font.loadFromFile("font2.ttf");
+	hitpointsText.setFont(font);
+	hitpointsText.setPosition(0, 0);
+	hitpointsText.setCharacterSize(30);
+	hitpointsText.setStyle(sf::Text::Regular);
+	hitpointsText.setFillColor(sf::Color::White);
+	hitpointsText.setOutlineColor(sf::Color::Black);
+	hitpointsText.setOutlineThickness(2.0f);
+	hitpointsText.setString("");
 }

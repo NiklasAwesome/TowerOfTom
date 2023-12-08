@@ -5,12 +5,17 @@
 class Door : public GameObject
 {
 private:
-	/* data */
+
 public:
 	Door(int x, int y, Textures &textures);
 	~Door();
-	void move(sf::Time delta);
-	void collided(GameObject *obstacle);
+	void takeDamage(int damage) override;
+	/**
+	 * @brief Set the Location of the door
+	 * 
+	 * @param x x value of location
+	 * @param y y value of location
+	 */
 	void setLocation(int x, int y);
 };
 

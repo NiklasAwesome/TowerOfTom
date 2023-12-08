@@ -9,21 +9,9 @@ Door::~Door()
 {
 }
 
-void Door::move(sf::Time delta)
+void Door::takeDamage(int damage)
 {
-	if (delta.asSeconds() == 100000000.0f)
-	{
-		/* code */
-	}
-	
-}
-
-void Door::collided(GameObject *obstacle)
-{
-	if (!obstacle->collidable)
-	{
-		
-	}
+	(void)damage;
 }
 
 void Door::setLocation(int x, int y)

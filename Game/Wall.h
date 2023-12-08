@@ -9,8 +9,7 @@ private:
 public:
 	Wall(int x, int y, Textures &textures);
 	~Wall();
-	void move(sf::Time delta);
-	void collided(GameObject *obstacle);
+	void takeDamage(int damage) override;
 };
 
 

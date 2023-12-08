@@ -25,7 +25,7 @@ private:
 	void endScreen(bool won, sf::Time playTime);
 	float finalPlayTime{0};
 public:
-	Game(/* args */);
+	Game(std::string mazeFile);
 	~Game();
 	/**
 	 * @brief Runs the game.

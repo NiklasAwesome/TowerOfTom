@@ -1,16 +1,15 @@
 #include "Player.h"
 
-Player::Player(int x, int y, Textures &textures) : Character(x + 16, y + 16, textures), textures(textures)
+Player::Player(int x, int y, Textures &textures) : Character(x + 16, y + 16, textures)
 {
 	hitpoints = 20;
 	damage = 1;
-	size = 31.0f;
 	collidable = true;
 	speed = 150.0f;
 	setTexture(textures.player);
 	weapon.setTexture(textures.fork, true);
 
-	sprite.setOrigin(size / 2, size / 2);
+	sprite.setOrigin(sprite.getGlobalBounds().width/2, sprite.getGlobalBounds().height/2);
 	weapon.setOrigin(weapon.getGlobalBounds().width/2, weapon.getGlobalBounds().height/2);
 }
 
@@ -130,13 +129,6 @@ void Player::takeDamage(int damage)
 		timeSinceDamaged.restart();
 		hitpoints -= damage;
 	}
-}
-
-
-
-bool Player::damageable()
-{
-	return timeSinceDamaged.getElapsedTime() > sf::seconds(1.0f);
 }
 
 std::string Player::hpString()

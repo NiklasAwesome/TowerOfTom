@@ -7,22 +7,59 @@
 
 class GameObject
 {
+// Attributes
 protected:
-	float size;
+	/**
+	 * @brief Refrence to Map::textures
+	 * 
+	 */
+	Textures & textures;
+	/**
+	 * @brief Sprite representing object
+	 * 
+	 */
 	sf::Sprite sprite;
-	sf::Vector2f prevLocation{0,0};
+	/**
+	 * @brief the objects location on the map
+	 * 
+	 */
 	sf::Vector2f location{0,0};
-	float prevRotation{0};
-	float rotation{0};
-	void setTexture(sf::Texture &texture);
-	sf::Vector2f normalize(sf::Vector2f &v);
-public:
+	
+public:	
+	/**
+	 * @brief if the object is collidable or not
+	 * 
+	 */
 	bool collidable{false};
+
+// Members
+protected:
+	/**
+	 * @brief Set the Texture of the Sprite
+	 * 
+	 * @param texture SFML texture
+	 */
+	void setTexture(sf::Texture &texture);
+
+public:
 	GameObject(int xLocation, int yLocation, Textures &textures);
 	virtual ~GameObject();
-	virtual void move(sf::Time delta) = 0;
-	void draw(sf::RenderWindow &window);
-	virtual void collided(GameObject *obstacle);
-	virtual void takeDamage(int);
+	/**
+	 * @brief Renders the object on the screen
+	 * 
+	 * @param window Refrence to the game window
+	 */
+	virtual void draw(sf::RenderWindow &window);
+	/**
+	 * @brief Lowers the hitpoints of the object
+	 * 
+	 * @param damage amount of hitpoints to deduct
+	 */
+	virtual void takeDamage(int damage) = 0;
+	/**
+	 * @brief returns the objects hitbox
+	 * 
+	 * @return sf::FloatRect SMFL hitbox used for collision detection
+	 */
 	sf::FloatRect bounds();
 };

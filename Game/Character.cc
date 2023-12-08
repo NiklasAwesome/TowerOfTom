@@ -1,6 +1,6 @@
 #include "Character.h"
 
-Character::Character(int x, int y, Textures &textures) : GameObject(x, y, textures), textures(textures)
+Character::Character(int x, int y, Textures &textures) : GameObject(x, y, textures)
 {
 	
 }
@@ -57,4 +57,25 @@ void Character::takeDamage(int damage)
 		timeSinceDamaged.restart();
 		hitpoints -= damage;
 	}
+}
+
+void Character::collided(GameObject *obstacle)
+{
+	if (!obstacle->collidable)
+	{
+		sf::Vector2f helper;
+		helper = prevLocation;
+		prevLocation = location;
+		location = helper;
+		sprite.setPosition(location);
+	}
+}
+
+sf::Vector2f Character::normalize(sf::Vector2f &v)
+{
+	float len = std::sqrt(v.x * v.x + v.y * v.y);
+	if (len <= 0.0f)
+		return sf::Vector2f{0, 0};
+	else
+		return v * (1.0f / len);
 }
