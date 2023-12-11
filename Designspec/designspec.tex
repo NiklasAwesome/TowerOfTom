@@ -31,8 +31,7 @@ Avslutningsvis diskuterar jag mina designval.
 
 
 \section{UML-diagram}
-Prickade linjer menar ett dependency. \\
-\includegraphics[scale=0.58]{uml-diagram}
+\includegraphics[scale=0.36]{classdia}
 
 \section{Detaljbeskrivning}
 Två av mina klasser kan vara extra intressanta att analysera: Playerklassen och Mapklassen.
@@ -42,7 +41,8 @@ Playerklassen ska representera spelaren. Klassen implementerar Characterklassen 
 Playerklassen interagerar direkt med två klasser, Mapklassen och Texturesklassen. 
 \subsubsection{Attribut}
 Dessa attribut är specificerade i Characterklassen som i sin tur ärver av GameObjectklassen.
-Jag diskuterar de mest intressanta.
+Jag diskuterar de mest intressanta.\\
+\textbf{Ärvda}
 \begin{itemize}
   \item sf::Sprite: sprite - sprite som representerar spelaren på spelplanen.
   \item sf::vector2f: location - positionen som spelaren har just nu.
@@ -51,14 +51,23 @@ Jag diskuterar de mest intressanta.
   \item float: speed - hur snabbt spelaren kan röra sig.
   \item int: damage - hur mycket skada spelaren gör när den attackerar.
   \item sf::Time: timeSinceDamaged - tiden sen spelaren sist blev skadad.
-  \item sf::Sprite: weapon - spriten som representerar vapnet som spelaren använder.
 \end{itemize}
+\textbf{Egna}
+\begin{itemize}
+  \item sf::Sprite: weapon - spriten som representerar vapnet som spelaren använder.
+  \item bool: space - om spaceknappen är intryckt eller inte.
+\end{itemize}
+
 \subsubsection{Metoder}
 Playerklassen ärver många metoder av sina föräldrar. Men vissa är 'overload' med lite annorlunda funktionalitet.
-Vissa metoder är lite extra intressanta.
+Vissa metoder är lite extra intressanta.\\
+\textbf{Ärvda}
 \begin{itemize}
   \item attackPoint() - exponerar spelarens vapens position för att hantera kollisioner.
   \item control() - metod för att hantera knapptryckningar som styr spelaren.
+\end{itemize}
+\textbf{Egna}
+\begin{itemize}
   \item isDead() - kollar ifall spelaren är död, ärvd från Characterklassen.
 \end{itemize}
 
@@ -85,6 +94,9 @@ Den viktigaste metoden i Mapklassen är collisionCheck().
   flyttas på.
 \end{itemize}
 
+\subsection{Devil och Minion}
+Devil och Minion är väldigt lika klasser, de har samma medlemsfuntioner men de är implementerade annorlunda. Minion rör sig snabbt och ryckigt och byter håll 
+minst en gång per sekund, medan devil rör sig långsammare och byter endast håll när en kollision sker. Devil är även större än Minion och skadar mer.
 
 \newpage
 \section{Diskussion}

@@ -4,7 +4,6 @@ Minion::Minion(int x, int y, Textures &textures) : Character(x, y, textures)
 {
 	hitpoints = 2;
 	damage = 1;
-	size = 15.0f;
 	collidable = true;
 	speed = 200.0f;
 	down = true;

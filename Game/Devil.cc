@@ -5,7 +5,6 @@ Devil::Devil(int x, int y, Textures &textures) : Character(x, y, textures)
 {
 	hitpoints = 10;
 	damage = 2;
-	size = 31.0f;
 	collidable = true;
 	speed = 100.0f;
 	down = true;

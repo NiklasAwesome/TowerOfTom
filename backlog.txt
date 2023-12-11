@@ -12,12 +12,11 @@ Klart:
 11. När en fiende har noll livspoäng så blir den fienden förintad.
 12. Fiender ska skada spelaren när de kolliderar.
 13. Spelaren ska tappa livspoäng när spelaren blir skadad.
+14. När spelaren har noll livspoäng ska spelet ta slut.
 15. 2 typer av fiender ska finnas, en stor och en liten.
 16. Det ska finnas en utgång.
 17. Om spelaren koliderar med utgången ska nästa bana påbörjas.
+18. Slutpoängen är tiden det tar att klara spelet (lägre är bättre).
 19. Banorna ska skapas baserat på en textfil som specificerar var väggarna ska vara, vart utgången är och var 
 -------------------------------
 Inte klart:
-
-14. När spelaren har noll livspoäng ska spelet börja om.
-18. Slutpoängen ska räknas ut baserat på antalet förintade fiender och tiden det tar att klara spelet.

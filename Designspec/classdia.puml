@@ -1,0 +1,214 @@
+@startuml
+
+
+
+
+
+/' Objects '/
+
+abstract class Character {
+	+Character(int x, int y, Textures& textures)
+	+~Character()
+	#damageable() : bool
+	+isDead() : bool
+	#speed : float
+	#hitpoints : int
+	#direction : sf::Vector2f
+	#up : bool
+	#down : bool
+	#left : bool
+	#right : bool
+	#prevRotation : float
+	#prevLocation : sf::Vector2f
+	#rotation : float
+	+damage : int
+	#timeSinceDamaged : sf::Clock
+	#normalize(sf::Vector2f& v) : sf::Vector2f
+	+collided(GameObject* obstacle) : void
+	+move(sf::Time delta) : void
+	+takeDamage(int damage) : void
+}
+
+
+class Devil {
+	+Devil(int x, int y, Textures& textures)
+	+~Devil()
+	+collided(GameObject* obstacle) : void
+	+move(sf::Time delta) : void
+	-setRandomDirection() : void
+	+takeDamage(int damage) : void
+}
+
+
+class Door {
+	+Door(int x, int y, Textures& textures)
+	+~Door()
+	+setLocation(int x, int y) : void
+	+takeDamage(int damage) : void
+}
+
+
+class Game {
+	+Game(std::string mazeFile)
+	+~Game()
+	-window : sf::RenderWindow
+	-map : Map
+	-finalPlayTime : float
+	-endScreen(bool won, sf::Time playTime) : void
+	+run() : void
+	-update(sf::Time delta) : void
+}
+
+
+abstract class GameObject {
+	+GameObject(int xLocation, int yLocation, Textures& textures)
+	+~GameObject()
+	#textures : Textures&
+	#location : sf::Vector2f
+	+collidable : bool
+	+bounds() : sf::FloatRect
+	#sprite : sf::Sprite
+	+draw(sf::RenderWindow& window) : void
+	#setTexture(sf::Texture& texture) : void
+	+{abstract} takeDamage(int damage) : void
+}
+
+
+class Map {
+	+Map(std::string mazeFile)
+	+~Map()
+	-level : int
+	+won : bool
+	-door : Door*
+	+player : Player*
+	-textures : Textures
+	-collided(GameObject* first, GameObject* second) : bool
+	-font : sf::Font
+	-hitpointsText : sf::Text
+	-mazeFile : std::string
+	-characterList : std::vector<Character*>
+	-propList : std::vector<GameObject*>
+	-mazeList : std::vector<std::vector<std::string>>
+	-addCharacter(Character* character) : void
+	-addProp(GameObject* gameObject) : void
+	-clearMap() : void
+	+collisionCheck() : void
+	+draw(sf::RenderWindow& window) : void
+	-readMapFile() : void
+	-setHitPointText() : void
+	-setMaze(std::vector<std::string> maze) : void
+	-setOuterWalls() : void
+	+update(sf::Time delta) : void
+}
+
+
+class Minion {
+	+Minion(int x, int y, Textures& textures)
+	+~Minion()
+	-timeSinceRandom : sf::Clock
+	+collided(GameObject* obstacle) : void
+	+move(sf::Time delta) : void
+	-setRandomDirection() : void
+	+takeDamage(int damage) : void
+}
+
+
+class Player {
+	+Player(int x, int y, Textures& textures)
+	+~Player()
+	-space : bool
+	+attacking() : bool
+	+attackPoint() : sf::FloatRect
+	-weapon : sf::Sprite
+	+hpString() : std::string
+	+collided(GameObject* obstacle) : void
+	+control(sf::Event& event) : void
+	+draw(sf::RenderWindow& window) : void
+	+move(sf::Time delta) : void
+	+setLocation(int x, int y) : void
+	-setWeaponLocation() : void
+	+takeDamage(int damage) : void
+}
+
+
+class Textures {
+	+Textures()
+	+~Textures()
+	+dagger : sf::Texture
+	+devil : sf::Texture
+	+devilHurt : sf::Texture
+	+door : sf::Texture
+	+fork : sf::Texture
+	+minion : sf::Texture
+	+minionHurt : sf::Texture
+	+player : sf::Texture
+	+playerHurt : sf::Texture
+	+wall : sf::Texture
+}
+
+
+class Wall {
+	+Wall(int x, int y, Textures& textures)
+	+~Wall()
+	+takeDamage(int damage) : void
+}
+
+
+
+
+
+/' Inheritance relationships '/
+
+.Character <|-- .Devil
+
+
+.Character <|-- .Minion
+
+
+.Character <|-- .Player
+
+
+.GameObject <|-- .Character
+
+
+.GameObject <|-- .Door
+
+
+.GameObject <|-- .Wall
+
+
+
+
+
+/' Aggregation relationships '/
+
+.Game "1" *-- "1" .Map
+
+
+.GameObject "1" o-- "1" .Textures
+
+
+.Map "1" *-- "N" .Character
+
+
+.Map "1" *-- "1" .Door
+
+
+.Map "1" *-- "N" .GameObject
+
+
+.Map "1" *-- "1" .Player
+
+
+.Map "1" *-- "1" .Textures
+
+
+
+
+
+
+/' Nested objects '/
+
+
+
+@enduml
