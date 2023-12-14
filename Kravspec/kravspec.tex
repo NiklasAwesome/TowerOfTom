@@ -2,10 +2,10 @@
 
 
 
-\newcommand{\version}{Version 1.1}
+\newcommand{\version}{Version 1.2}
 \author{Niklas Åsberg, \url{nikas214@student.liu.se}}
 \title{Kravspecification}
-\date{2023-11-24}
+\date{2023-12-14}
 \rhead{Niklas Åsberg}
 \usepackage{graphicx}
 \graphicspath{{./}}
@@ -21,6 +21,7 @@ Ver. & Revisionsbeskrivning & Datum \\\hline
 0.1 & Utkast & 2023-11-12 \\\hline
 1.0 & Utökat antal krav och förtydligat beskrivningen & 2023-11-18 \\\hline
 1.1 & Ändringar efter feedback & 2023-11-24 \\\hline
+1.2 & Kravspecificationen reflekterar nu spelet & 2023-12-14 \\\hline
 \end{tabularx}
 \end{table}
 
@@ -29,24 +30,24 @@ Ver. & Revisionsbeskrivning & Datum \\\hline
 
 \section{Spelidé}
 Spelet är ett tvådimentionellt arkadspel, målet är att ta sig igenom så många labyrinter som möjligt på så kort tid som möjligt utan att dö.
-Spelplanen är ett rutnät, all förflyttning sker mellan rutor intill varandra. Det kommer finnas väggar på vissa rutor som man inte kan röra sig igenom.
-Det kommer vara massa fiender ivägen för spelaren som spelaren ska ta sig förbi eller förinta. 
-Fiender kan skada spelaren om de hamnar i samma ruta, hur mycket skada spearen tar är olika beroende på fiende-typ.
-Spelaren kan attackera fiender när fienderna är en ruta bort.
+Spelplanen är ett rutnät. Det kommer finnas väggar på vissa rutor som man inte kan röra sig igenom.
+Det kommer vara fiender ivägen för spelaren som spelaren ska ta sig förbi eller förinta. 
+Fiender kan skada spelaren om de kolliderar, hur mycket skada spelaren tar är olika beroende på fiende-typ.
+Spelaren kan attackera fiender när fienderna är framför spelaren.
 Målgruppen för spelet är de som gillar arkadspel och speed-runners.
-Spelet har mycket fokus på snabbhet, så spelaren kommer att försöka slå sin bästa tid och tävla med andra spelara om vem som får högst poäng.
+Spelet har mycket fokus på snabbhet, så spelaren kommer att försöka slå sin bästa tid och tävla med andra spelara om vem som lägst tid.
 
 \section{Spelmekanik}
-Man styr sin spelare med W, A, S och D tangenterna och attackerar med mellanslag. Varje bana är en labyrint när spelaren ska ta sig till utgången, när spelaren tagit sig till utgången så börjar nästa bana.
-Det finns fiender som är i vägen och dessa kommer att skada spelaren om de är på samma ruta.
-Spelaren behöver inte nödvändigtvis förinta fienderna för att klara banan men spelaren får extrapoäng om spelaren förintar fiender.
+Man styr sin spelare med W, A, S och D tangenterna eller piltangenterna och attackerar med mellanslag. Varje bana är en labyrint när spelaren ska ta sig till utgången, när spelaren tagit sig till utgången så börjar nästa bana.
+Det finns fiender som är i vägen och dessa kommer att skada spelaren om de kolliderar.
+Spelaren behöver inte nödvändigtvis förinta fienderna för att klara banan.
 
 \section{Regler}
 Varken spelaren eller fiender kan röra sig till en ruta där det finns en vägg.
-Spelaren tar skada om spelaren befinner sig på samma ruta som en fiende.
-Spelaren kan skada en fiende som står en ruta framför spelaren genom att attackera.
-När spelaren är på rutan där utgången finns så är banan avklarad och spelaren flyttas till nästa bana.
-Om spelaren inte har några livspoäng kvar så börjar spelet om.
+Spelaren tar skada om spelaren kolliderar med en fiende.
+Spelaren kan skada en fiende som står framför spelaren genom att attackera.
+När spelaren kolliderar med utgången så är banan avklarad och spelaren flyttas till nästa bana.
+Om spelaren inte har några livspoäng kvar så är spelet slut.
 Spelaren "Vinner" genom att ta sig igenom alla banor.
 
 \newpage
@@ -72,12 +73,12 @@ Spelet kommer vara tvådimentionellt och vara ur ett fågelperspektiv.
   \item När en fiende har noll livspoäng så blir den fienden förintad.
   \item Fiender ska skada spelaren när de kolliderar.
   \item Spelaren ska tappa livspoäng när spelaren blir skadad.
-  \item När spelaren har noll livspoäng ska spelet börja om.
+  \item När spelaren har noll livspoäng ska spelet ta slut.
   \item 2 typer av fiender ska finnas, en stor och en liten. Dessa ska göra olika skada och ska ha olika mycket liv. De ska ha olika rörelsemönster.
   \item Det ska finnas en utgång.
   \item Om spelaren koliderar med utgången ska nästa bana påbörjas.
-  \item Slutpoängen ska räknas ut baserat på antalet förintade fiender och tiden det tar att klara spelet.
-  \item Banorna ska skapas baserat på en textfil som specificerar var väggarna ska vara, vart utgången är och var 
+  \item Slutpoängen är tiden det tar att klara alla banor, lägre är bättre.
+  \item Banorna ska skapas baserat på en textfil som specificerar var väggarna ska vara, vart utgången är och var alla karakärer ska vara.
 \end{enumerate}
 
 \subsection{Bör-krav}
