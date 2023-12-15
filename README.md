@@ -1,4 +1,4 @@
-# TDP005 - Project
+# TDP005 - Project - Tower of Tom
 
 ## Hur startar man spelet?
 Stå i `Game` mappen och kör kommandot `make`  
