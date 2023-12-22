@@ -17,6 +17,7 @@ private:
 	 */
 	sf::Sprite weapon;
 public:
+	bool newLevel;
 
 // Members
 private:
@@ -31,6 +32,7 @@ public:
 	void collided(GameObject *obstacle) override;
 	void takeDamage(int damage) override;
 	void draw(sf::RenderWindow &window) override;
+	void nextLevel() override;
 	
 	Player(int x, int y, Textures &textures);
 	~Player();
@@ -66,4 +68,6 @@ public:
 	 * @param y y value of location
 	 */
 	void setLocation(int x, int y);
+
+	void setBack() override;
 };

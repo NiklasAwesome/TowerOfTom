@@ -26,3 +26,26 @@ sf::FloatRect GameObject::bounds()
 {
 	return sprite.getGlobalBounds();
 }
+
+void GameObject::collided(GameObject *obstacle)
+{
+	obstacle->setBack();
+}
+
+void GameObject::nextLevel()
+{
+}
+
+void GameObject::move(sf::Time delta)
+{
+	(void)delta;
+}
+
+bool GameObject::isDead()
+{
+	return false;
+}
+
+void GameObject::setBack()
+{
+}

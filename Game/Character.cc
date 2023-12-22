@@ -2,7 +2,6 @@
 
 Character::Character(int x, int y, Textures &textures) : GameObject(x, y, textures)
 {
-	
 }
 
 Character::~Character()
@@ -18,7 +17,7 @@ void Character::move(sf::Time delta)
 {
 	prevLocation = location;
 	float distance = speed * (delta.asMicroseconds() / 1000000.0f);
-	sf::Vector2f direction{0,0};
+	sf::Vector2f direction{0, 0};
 	if (up)
 	{
 		direction.y -= 1;
@@ -35,7 +34,7 @@ void Character::move(sf::Time delta)
 	{
 		direction.x += 1;
 	}
-	if(direction.x == 0 && direction.y == 0)
+	if (direction.x == 0 && direction.y == 0)
 	{
 		sprite.rotate(0.2f);
 	}
@@ -47,7 +46,7 @@ void Character::move(sf::Time delta)
 
 bool Character::damageable()
 {
-	return timeSinceDamaged.getElapsedTime() > sf::seconds(1.0f);
+	return timeSinceDamaged.getElapsedTime() > sf::seconds(0.5f);
 }
 
 void Character::takeDamage(int damage)
@@ -61,14 +60,7 @@ void Character::takeDamage(int damage)
 
 void Character::collided(GameObject *obstacle)
 {
-	if (!obstacle->collidable)
-	{
-		sf::Vector2f helper;
-		helper = prevLocation;
-		prevLocation = location;
-		location = helper;
-		sprite.setPosition(location);
-	}
+	(void) obstacle;
 }
 
 sf::Vector2f Character::normalize(sf::Vector2f &v)
@@ -78,4 +70,8 @@ sf::Vector2f Character::normalize(sf::Vector2f &v)
 		return sf::Vector2f{0, 0};
 	else
 		return v * (1.0f / len);
+}
+
+void Character::nextLevel()
+{
 }

@@ -20,3 +20,8 @@ void Door::setLocation(int x, int y)
 	location.y = y;
 	sprite.setPosition(x, y);
 }
+
+void Door::collided(GameObject *obstacle)
+{
+	obstacle->nextLevel();
+}

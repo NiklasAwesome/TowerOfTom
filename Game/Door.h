@@ -17,6 +17,7 @@ public:
 	 * @param y y value of location
 	 */
 	void setLocation(int x, int y);
+	void collided(GameObject *obsticle) override;
 };
 
 

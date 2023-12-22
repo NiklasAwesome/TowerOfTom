@@ -4,7 +4,6 @@ Minion::Minion(int x, int y, Textures &textures) : Character(x, y, textures)
 {
 	hitpoints = 2;
 	damage = 1;
-	collidable = true;
 	speed = 200.0f;
 	down = true;
 	setTexture(textures.minion);
@@ -37,7 +36,7 @@ void Minion::setRandomDirection()
 	case 3:
 		right = true;
 		break;
-	
+
 	default:
 		break;
 	}
@@ -45,20 +44,7 @@ void Minion::setRandomDirection()
 
 void Minion::collided(GameObject *obstacle)
 {
-	if (!obstacle->collidable)
-	{
-		sf::Vector2f helper;
-		helper = prevLocation;
-		prevLocation = location;
-		location = helper;
-		sprite.setPosition(location);
-	}
-	else
-	{
-		obstacle->takeDamage(damage);
-	}
-	
-	
+	obstacle->takeDamage(damage);
 	setRandomDirection();
 }
 
@@ -68,10 +54,10 @@ void Minion::move(sf::Time delta)
 	{
 		setRandomDirection();
 	}
-	
+
 	prevLocation = location;
 	float distance = speed * (delta.asMicroseconds() / 1000000.0f);
-	sf::Vector2f direction{0,0};
+	sf::Vector2f direction{0, 0};
 	if (up)
 	{
 		direction.y -= 1;
@@ -88,7 +74,7 @@ void Minion::move(sf::Time delta)
 	{
 		direction.x += 1;
 	}
-	if(direction.x == 0 && direction.y == 0)
+	if (direction.x == 0 && direction.y == 0)
 	{
 		sprite.rotate(0.2f);
 	}
@@ -111,5 +97,20 @@ void Minion::takeDamage(int damage)
 		hitpoints -= damage;
 	}
 	setRandomDirection();
-	
+	setBack();
+}
+
+void Minion::setBack()
+{
+	sf::Vector2f helper;
+	helper = prevLocation;
+	prevLocation = location;
+	location = helper;
+	sprite.setPosition(location);
+	setRandomDirection();
+}
+
+void Minion::nextLevel()
+{
+	setBack();
 }

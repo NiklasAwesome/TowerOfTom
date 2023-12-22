@@ -4,13 +4,14 @@ Player::Player(int x, int y, Textures &textures) : Character(x + 16, y + 16, tex
 {
 	hitpoints = 20;
 	damage = 1;
-	collidable = true;
 	speed = 150.0f;
 	setTexture(textures.player);
 	weapon.setTexture(textures.fork, true);
 
-	sprite.setOrigin(sprite.getGlobalBounds().width/2, sprite.getGlobalBounds().height/2);
-	weapon.setOrigin(weapon.getGlobalBounds().width/2, weapon.getGlobalBounds().height/2);
+	sprite.setOrigin(sprite.getGlobalBounds().width / 2, sprite.getGlobalBounds().height / 2);
+	weapon.setOrigin(weapon.getGlobalBounds().width / 2, weapon.getGlobalBounds().height / 2);
+
+	newLevel = false;
 }
 
 Player::~Player()
@@ -105,20 +106,7 @@ void Player::move(sf::Time delta)
 
 void Player::collided(GameObject *obstacle)
 {
-	if (!obstacle->collidable)
-	{
-		sf::Vector2f helper;
-		float rotHelper;
-		helper = prevLocation;
-		prevLocation = location;
-		location = helper;
-
-		rotHelper = prevRotation;
-		prevRotation = rotation;
-		rotation = rotHelper;
-		sprite.setPosition(location);
-		sprite.setRotation(rotation * (180 / 3.141592654f));
-	}
+	(void) obstacle;
 }
 
 void Player::takeDamage(int damage)
@@ -143,7 +131,7 @@ bool Player::attacking()
 
 sf::FloatRect Player::attackPoint()
 {
-	
+
 	return weapon.getGlobalBounds();
 }
 
@@ -170,4 +158,24 @@ void Player::setLocation(int x, int y)
 	location.y = y + 17;
 	rotation = 0;
 	sprite.setPosition(x + 17, y + 17);
+}
+
+void Player::nextLevel()
+{
+	newLevel = true;
+}
+
+void Player::setBack()
+{
+	sf::Vector2f helper;
+	float rotHelper;
+	helper = prevLocation;
+	prevLocation = location;
+	location = helper;
+
+	rotHelper = prevRotation;
+	prevRotation = rotation;
+	rotation = rotHelper;
+	sprite.setPosition(location);
+	sprite.setRotation(rotation * (180 / 3.141592654f));
 }

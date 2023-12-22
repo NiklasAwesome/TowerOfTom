@@ -1,11 +1,9 @@
 #include "Devil.h"
 
-
 Devil::Devil(int x, int y, Textures &textures) : Character(x, y, textures)
 {
-	hitpoints = 10;
+	hitpoints = 4;
 	damage = 2;
-	collidable = true;
 	speed = 100.0f;
 	down = true;
 	setTexture(textures.devil);
@@ -37,7 +35,7 @@ void Devil::setRandomDirection()
 	case 3:
 		right = true;
 		break;
-	
+
 	default:
 		break;
 	}
@@ -45,30 +43,17 @@ void Devil::setRandomDirection()
 
 void Devil::collided(GameObject *obstacle)
 {
-	if (!obstacle->collidable)
-	{
-		sf::Vector2f helper;
-		helper = prevLocation;
-		prevLocation = location;
-		location = helper;
-		sprite.setPosition(location);
-	}
-	else
-	{
-		obstacle->takeDamage(damage);
-	}
-	
-	
+
+	obstacle->takeDamage(damage);
+
 	setRandomDirection();
-	
-	
 }
 
 void Devil::move(sf::Time delta)
 {
 	prevLocation = location;
 	float distance = speed * (delta.asMicroseconds() / 1000000.0f);
-	sf::Vector2f direction{0,0};
+	sf::Vector2f direction{0, 0};
 	if (up)
 	{
 		direction.y -= 1;
@@ -85,7 +70,7 @@ void Devil::move(sf::Time delta)
 	{
 		direction.x += 1;
 	}
-	if(direction.x == 0 && direction.y == 0)
+	if (direction.x == 0 && direction.y == 0)
 	{
 		sprite.rotate(0.2f);
 	}
@@ -108,4 +93,20 @@ void Devil::takeDamage(int damage)
 		hitpoints -= damage;
 	}
 	setRandomDirection();
+	setBack();
+}
+
+void Devil::setBack()
+{
+	sf::Vector2f helper;
+	helper = prevLocation;
+	prevLocation = location;
+	location = helper;
+	sprite.setPosition(location);
+	setRandomDirection();
+}
+
+void Devil::nextLevel()
+{
+	setBack();
 }

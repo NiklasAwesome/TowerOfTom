@@ -18,4 +18,6 @@ public:
 	void collided(GameObject *obstacle) override;
 	void move(sf::Time delta) override;
 	void takeDamage(int damage) override;
+	void setBack() override;
+	void nextLevel() override;
 };

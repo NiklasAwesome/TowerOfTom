@@ -5,7 +5,6 @@ Map::Map(std::string mazeFile) : mazeFile(mazeFile)
 	setHitPointText();
 
 	player = new Player(40, 40, textures);
-	door = new Door(100, 100, textures);
 	readMapFile();
 	if (!mazeList.empty())
 	{
@@ -20,28 +19,16 @@ Map::~Map()
 	{
 		delete propList[i];
 	}
-	for (size_t i = 0; i < characterList.size(); i++)
-	{
-		delete characterList[i];
-	}
 }
 
 void Map::draw(sf::RenderWindow &window)
 {
 	player->draw(window);
-	door->draw(window);
 	if (propList.size() > 0)
 	{
 		for (size_t i = 0; i < propList.size(); i++)
 		{
 			propList[i]->draw(window);
-		}
-	}
-	if (characterList.size() > 0)
-	{
-		for (size_t i = 0; i < characterList.size(); i++)
-		{
-			characterList[i]->draw(window);
 		}
 	}
 	window.draw(hitpointsText);
@@ -52,66 +39,69 @@ void Map::addProp(GameObject *gameObject)
 	propList.push_back(gameObject);
 }
 
-void Map::addCharacter(Character *character)
-{
-	characterList.push_back(character);
-}
-
 void Map::update(sf::Time delta)
 {
 	hitpointsText.setString(player->hpString());
 	player->move(delta);
-	if (characterList.size() > 0)
+	if (propList.size() > 0)
 	{
-		for (size_t i = 0; i < characterList.size(); i++)
+		for (size_t i = 0; i < propList.size(); i++)
 		{
-			characterList[i]->move(delta);
+			propList[i]->move(delta);
 		}
 	}
 	if (player->attacking())
 	{
-		for (size_t i = 0; i < characterList.size(); i++)
+		for (size_t i = 0; i < propList.size(); i++)
 		{
-			if (characterList[i]->bounds().intersects(player->attackPoint()))
+			if (propList[i]->bounds().intersects(player->attackPoint()))
 			{
-				characterList[i]->takeDamage(player->damage);
-				if (characterList[i]->isDead())
-				{
-					characterList.erase(characterList.begin() + i);
-				}
+				propList[i]->takeDamage(player->damage);
 
 				break;
 			}
 		}
 	}
+	for (size_t i = 0; i < propList.size(); i++)
+	{
+
+		if (propList[i]->isDead())
+		{
+			propList.erase(propList.begin() + i);
+			break;
+		}
+
+	}
 }
 
 void Map::collisionCheck()
 {
-	for (size_t i = 0; i < characterList.size(); i++)
+	for (size_t i = 0; i < propList.size(); i++)
 	{
 		for (size_t j = 0; j < propList.size(); j++)
 		{
-			if (collided(characterList[i], propList[j]))
+			if (collided(propList[i], propList[j]))
 			{
-				characterList[i]->collided(propList[j]);
+				propList[i]->collided(propList[j]);
 			}
 		}
-		if (collided(player, characterList[i]))
-		{
-			player->collided(characterList[i]);
-			characterList[i]->collided(player);
-		}
-	}
-	for (size_t i = 0; i < propList.size(); i++)
-	{
 		if (collided(player, propList[i]))
 		{
 			player->collided(propList[i]);
+			propList[i]->collided(player);
 		}
 	}
-	if (collided(player, door))
+	// for (size_t i = 0; i < propList.size(); i++)
+	// {
+	// 	if (collided(player, propList[i]))
+	// 	{
+	// 		player->collided(propList[i]);
+	// 		propList[i]->collided(player);
+	// 	}
+	// }
+	if (player->newLevel)
 	{
+		player->newLevel = false;
 		level++;
 		if (level < (int)mazeList.size())
 		{
@@ -127,6 +117,11 @@ void Map::collisionCheck()
 
 bool Map::collided(GameObject *first, GameObject *second)
 {
+	if (first == second)
+	{
+		return false;
+	}
+
 	return first->bounds().intersects(second->bounds());
 }
 
@@ -189,15 +184,15 @@ void Map::setMaze(std::vector<std::string> maze)
 			}
 			if (maze[i][c] == 'D')
 			{
-				addCharacter(new Devil{32 + 64 * (int)c, 32 + 64 * (int)i, textures});
+				addProp(new Devil{32 + 64 * (int)c, 32 + 64 * (int)i, textures});
 			}
 			if (maze[i][c] == 'M')
 			{
-				addCharacter(new Minion{32 + 64 * (int)c, 32 + 64 * (int)i, textures});
+				addProp(new Minion{32 + 64 * (int)c, 32 + 64 * (int)i, textures});
 			}
 			if (maze[i][c] == 'E')
 			{
-				door->setLocation(32 + 64 * (int)c, 32 + 64 * (int)i);
+				addProp(new Door{32 + 64 * (int)c, 32 + 64 * (int)i, textures});
 			}
 			if (maze[i][c] == 'P')
 			{
@@ -210,9 +205,7 @@ void Map::setMaze(std::vector<std::string> maze)
 void Map::clearMap()
 {
 	propList.clear();
-	characterList.clear();
 }
-
 
 void Map::setHitPointText()
 {

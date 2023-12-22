@@ -26,11 +26,7 @@ protected:
 	sf::Vector2f location{0,0};
 	
 public:	
-	/**
-	 * @brief if the object is collidable or not
-	 * 
-	 */
-	bool collidable{false};
+
 
 // Members
 protected:
@@ -62,4 +58,9 @@ public:
 	 * @return sf::FloatRect SMFL hitbox used for collision detection
 	 */
 	sf::FloatRect bounds();
+	virtual void move(sf::Time delta);
+	virtual void collided(GameObject *obstacle);
+	virtual void nextLevel();
+	virtual bool isDead();
+	virtual void setBack();
 };

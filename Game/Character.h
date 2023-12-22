@@ -104,7 +104,8 @@ public:
 	 * 
 	 * @param obstacle the object that the character has collided with
 	 */
-	virtual void collided(GameObject *obstacle);
+	virtual void collided(GameObject *obstacle) override;
+	virtual void nextLevel();
 	virtual void takeDamage(int damage) override;
 };
 
